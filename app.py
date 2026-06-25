@@ -5,18 +5,57 @@ import estoque as est
 # ── Configuração da página ────────────────────────────────────────────────────
 st.set_page_config(
     page_title="Supermercado do Seu Zé",
-    page_icon="🛒",
+    page_icon="https://fonts.gstatic.com/s/i/materialiconsoutlined/shopping_cart/v12/24px.svg",
     layout="wide",
     initial_sidebar_state="expanded",
 )
 
-# ── CSS customizado ────────────────────────────────────────────────────────────
 st.markdown("""
 <style>
-    /* Fonte e cores gerais */
+    /* Material Symbols */
+    @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200');
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
     html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
+
+    /* Classe base do ícone */
+    .mi {
+        font-family: 'Material Symbols Outlined';
+        font-weight: normal;
+        font-style: normal;
+        font-size: 20px;
+        line-height: 1;
+        letter-spacing: normal;
+        text-transform: none;
+        display: inline-flex;
+        align-items: center;
+        white-space: nowrap;
+        word-wrap: normal;
+        direction: ltr;
+        vertical-align: middle;
+        -webkit-font-feature-settings: 'liga';
+        font-feature-settings: 'liga';
+        -webkit-font-smoothing: antialiased;
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+
+    /* Variantes de tamanho */
+    .mi-sm { font-size: 16px; }
+    .mi-lg { font-size: 28px; }
+    .mi-xl { font-size: 36px; }
+
+    /* Variantes de preenchimento (filled) */
+    .mi-filled {
+        font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+
+    /* Cores semânticas para ícones */
+    .mi-green  { color: #2d6a4f; }
+    .mi-orange { color: #f97316; }
+    .mi-red    { color: #dc2626; }
+    .mi-white  { color: #ffffff; }
+    .mi-gray   { color: #6b7280; }
+    .mi-amber  { color: #d97706; }
 
     /* Header da sidebar */
     .sidebar-header {
@@ -27,8 +66,16 @@ st.markdown("""
         text-align: center;
         margin-bottom: 1rem;
     }
-    .sidebar-header h2 { margin: 0; font-size: 1.1rem; font-weight: 700; }
-    .sidebar-header p  { margin: 0.2rem 0 0; font-size: 0.78rem; opacity: 0.8; }
+    .sidebar-header h2 {
+        margin: 0.4rem 0 0;
+        font-size: 1.1rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.4rem;
+    }
+    .sidebar-header p { margin: 0.2rem 0 0; font-size: 0.78rem; opacity: 0.8; }
 
     /* Título principal */
     .main-title {
@@ -36,14 +83,18 @@ st.markdown("""
         font-weight: 700;
         color: #1a472a;
         margin-bottom: 0.2rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
     }
+    .main-title .mi { font-size: 1.8rem; }
     .main-subtitle {
         color: #6b7280;
         font-size: 0.95rem;
         margin-bottom: 1.5rem;
     }
 
-    /* Cards de métricas de alerta */
+    /* Cards de alertas */
     .alert-card {
         background: #fff7ed;
         border: 1px solid #fed7aa;
@@ -52,10 +103,16 @@ st.markdown("""
         padding: 0.8rem 1rem;
         margin-bottom: 0.5rem;
     }
-    .alert-card .prod-nome { font-weight: 600; color: #9a3412; }
-    .alert-card .prod-qtd  { font-size: 0.85rem; color: #c2410c; }
+    .alert-card .prod-nome {
+        font-weight: 600;
+        color: #9a3412;
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+    }
+    .alert-card .prod-qtd { font-size: 0.85rem; color: #c2410c; }
 
-    /* Separador da sidebar */
+    /* Separador sidebar */
     hr { border-top: 1px solid #e5e7eb; margin: 0.8rem 0; }
 
     /* Botão primário verde */
@@ -68,20 +125,20 @@ st.markdown("""
         background-color: #1a472a;
     }
 
-    /* Botão de perigo */
-    .danger-btn > button {
-        background-color: #dc2626 !important;
-        color: white !important;
-        border: none !important;
-    }
-    .danger-btn > button:hover {
-        background-color: #b91c1c !important;
-    }
-
     /* Tabela limpa */
     .stDataFrame { border-radius: 10px; overflow: hidden; }
+
+    /* Label de navegação oculta */
+    .nav-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: #9ca3af; margin-bottom: 0.25rem; }
 </style>
 """, unsafe_allow_html=True)
+
+
+# ── Helpers de ícone ───────────────────────────────────────────────────────────
+def icon(name: str, cls: str = "") -> str:
+    """Gera um span com ícone Material Symbols."""
+    extra = f" {cls}" if cls else ""
+    return f'<span class="mi{extra}">{name}</span>'
 
 
 # ── Estado da sessão ───────────────────────────────────────────────────────────
@@ -91,16 +148,17 @@ if "estoque" not in st.session_state:
 
 # ── Sidebar ────────────────────────────────────────────────────────────────────
 with st.sidebar:
-    st.markdown("""
+    st.markdown(f"""
     <div class="sidebar-header">
-        <h2>🛒 Supermercado do Seu Zé</h2>
+        {icon('shopping_cart', 'mi-xl mi-white mi-filled')}
+        <h2>Supermercado do Seu Zé</h2>
         <p>Painel do Administrador</p>
     </div>
     """, unsafe_allow_html=True)
 
     pagina = st.radio(
         "Navegação",
-        ["📊 Visualizar Estoque", "➕ Adicionar / Atualizar", "❌ Remover Produto"],
+        ["Visualizar Estoque", "Adicionar / Atualizar", "Remover Produto"],
         label_visibility="collapsed",
     )
 
@@ -109,17 +167,23 @@ with st.sidebar:
     # Mini-painel de alertas na sidebar
     alertas = est.produtos_estoque_baixo(st.session_state.estoque)
     if alertas:
-        st.markdown(f"**⚠️ Estoque baixo — {len(alertas)} produto(s)**")
+        st.markdown(
+            f"{icon('warning', 'mi-amber')} **Estoque baixo — {len(alertas)} produto(s)**",
+            unsafe_allow_html=True,
+        )
         for a in alertas:
             st.markdown(
                 f"<div class='alert-card'>"
-                f"<span class='prod-nome'>{a['nome']}</span><br>"
+                f"<span class='prod-nome'>{icon('inventory_2', 'mi-sm mi-orange')} {a['nome']}</span><br>"
                 f"<span class='prod-qtd'>Restam apenas {a['quantidade']} unid.</span>"
                 f"</div>",
                 unsafe_allow_html=True,
             )
     else:
-        st.success("✅ Todos os produtos estão abastecidos.")
+        st.markdown(
+            f"{icon('check_circle', 'mi-green mi-filled')} Todos os produtos estão abastecidos.",
+            unsafe_allow_html=True,
+        )
 
 
 # ── Helpers ────────────────────────────────────────────────────────────────────
@@ -130,7 +194,7 @@ def estoque_como_dataframe(estoque: dict) -> pd.DataFrame:
             "Produto": dados["nome"].title(),
             "Preço (R$)": f"{dados['preco']:.2f}",
             "Quantidade": dados["quantidade"],
-            "Status": "⚠️ Baixo" if dados["quantidade"] < est.LIMITE_ESTOQUE_BAIXO else "✅ OK",
+            "Status": "Baixo" if dados["quantidade"] < est.LIMITE_ESTOQUE_BAIXO else "OK",
         }
         for id_p, dados in sorted(estoque.items(), key=lambda x: int(x[0]))
     ]
@@ -138,17 +202,22 @@ def estoque_como_dataframe(estoque: dict) -> pd.DataFrame:
 
 
 # ── Página 1 — Visualizar Estoque ─────────────────────────────────────────────
-if pagina == "📊 Visualizar Estoque":
-    st.markdown("<div class='main-title'>📊 Estoque Completo</div>", unsafe_allow_html=True)
+if pagina == "Visualizar Estoque":
+    st.markdown(
+        f"<div class='main-title'>{icon('bar_chart', 'mi-green')} Estoque Completo</div>",
+        unsafe_allow_html=True,
+    )
     st.markdown(
         f"<div class='main-subtitle'>{len(st.session_state.estoque)} produto(s) cadastrado(s)</div>",
         unsafe_allow_html=True,
     )
 
-    # Bloco de alertas de estoque baixo
     alertas = est.produtos_estoque_baixo(st.session_state.estoque)
     if alertas:
-        with st.expander(f"⚠️ {len(alertas)} produto(s) com estoque abaixo de {est.LIMITE_ESTOQUE_BAIXO} unidades — clique para ver", expanded=True):
+        with st.expander(
+            f"⚑ {len(alertas)} produto(s) com estoque abaixo de {est.LIMITE_ESTOQUE_BAIXO} unidades — clique para ver",
+            expanded=True,
+        ):
             cols = st.columns(min(len(alertas), 4))
             for i, a in enumerate(alertas):
                 with cols[i % 4]:
@@ -159,7 +228,6 @@ if pagina == "📊 Visualizar Estoque":
                         delta_color="inverse",
                     )
 
-    # Tabela principal
     df = estoque_como_dataframe(st.session_state.estoque)
     st.dataframe(
         df,
@@ -174,7 +242,6 @@ if pagina == "📊 Visualizar Estoque":
         },
     )
 
-    # Métricas rápidas
     st.markdown("---")
     total_itens = sum(d["quantidade"] for d in st.session_state.estoque.values())
     valor_total = sum(d["preco"] * d["quantidade"] for d in st.session_state.estoque.values())
@@ -185,11 +252,16 @@ if pagina == "📊 Visualizar Estoque":
 
 
 # ── Página 2 — Adicionar / Atualizar ──────────────────────────────────────────
-elif pagina == "➕ Adicionar / Atualizar":
-    st.markdown("<div class='main-title'>➕ Adicionar / Atualizar Produto</div>", unsafe_allow_html=True)
-    st.markdown("<div class='main-subtitle'>Selecione um produto existente para atualizar ou escolha \"Novo produto\" para cadastrar.</div>", unsafe_allow_html=True)
+elif pagina == "Adicionar / Atualizar":
+    st.markdown(
+        f"<div class='main-title'>{icon('add_circle', 'mi-green')} Adicionar / Atualizar Produto</div>",
+        unsafe_allow_html=True,
+    )
+    st.markdown(
+        "<div class='main-subtitle'>Selecione um produto existente para atualizar ou escolha \"Novo produto\" para cadastrar.</div>",
+        unsafe_allow_html=True,
+    )
 
-    # Selectbox com produtos existentes + opção novo
     opcoes_existentes = {
         f"{dados['nome'].title()} (ID: {id_p})": id_p
         for id_p, dados in sorted(st.session_state.estoque.items(), key=lambda x: int(x[0]))
@@ -197,7 +269,6 @@ elif pagina == "➕ Adicionar / Atualizar":
     opcoes = ["[Novo produto]"] + list(opcoes_existentes.keys())
     selecao = st.selectbox("Produto", opcoes, help="Selecione um produto existente para pré-preencher os campos.")
 
-    # Pré-preenche campos se produto existente selecionado
     if selecao == "[Novo produto]":
         nome_padrao, preco_padrao, qtd_padrao = "", 0.01, 1
     else:
@@ -233,7 +304,7 @@ elif pagina == "➕ Adicionar / Atualizar":
     )
 
     st.markdown("")
-    if st.button("💾 Salvar produto", type="primary", use_container_width=True):
+    if st.button("Salvar produto", type="primary", use_container_width=True):
         if not nome_input.strip():
             st.error("O nome do produto não pode estar vazio.")
         else:
@@ -245,16 +316,22 @@ elif pagina == "➕ Adicionar / Atualizar":
             )
             st.session_state.estoque = novo_estoque
             if status == "adicionado":
-                st.success(f"✅ {msg}")
+                st.success(f"{msg}")
             else:
-                st.info(f"🔄 {msg}")
+                st.info(f"{msg}")
             st.rerun()
 
 
 # ── Página 3 — Remover Produto ────────────────────────────────────────────────
-elif pagina == "❌ Remover Produto":
-    st.markdown("<div class='main-title'>❌ Remover Produto</div>", unsafe_allow_html=True)
-    st.markdown("<div class='main-subtitle'>Selecione o produto que deseja excluir do estoque.</div>", unsafe_allow_html=True)
+elif pagina == "Remover Produto":
+    st.markdown(
+        f"<div class='main-title'>{icon('delete', 'mi-red')} Remover Produto</div>",
+        unsafe_allow_html=True,
+    )
+    st.markdown(
+        "<div class='main-subtitle'>Selecione o produto que deseja excluir do estoque.</div>",
+        unsafe_allow_html=True,
+    )
 
     if not st.session_state.estoque:
         st.warning("O estoque está vazio. Nenhum produto para remover.")
@@ -268,7 +345,6 @@ elif pagina == "❌ Remover Produto":
         id_remover = opcoes_remocao[selecao_rem]
         dados_remover = st.session_state.estoque[id_remover]
 
-        # Card de confirmação
         st.markdown("---")
         st.markdown("**Você está prestes a remover:**")
         col_a, col_b, col_c = st.columns(3)
@@ -276,13 +352,13 @@ elif pagina == "❌ Remover Produto":
         col_b.metric("Quantidade", dados_remover["quantidade"])
         col_c.metric("Preço", f"R$ {dados_remover['preco']:.2f}")
 
-        confirmar = st.checkbox("✅ Confirmo que desejo remover este produto permanentemente.")
+        confirmar = st.checkbox("Confirmo que desejo remover este produto permanentemente.")
 
         st.markdown("")
-        if st.button("🗑️ Remover produto", type="primary", disabled=not confirmar, use_container_width=True):
+        if st.button("Remover produto", type="primary", disabled=not confirmar, use_container_width=True):
             novo_estoque, msg = est.remover_item(st.session_state.estoque, id_remover)
             st.session_state.estoque = novo_estoque
-            st.success(f"✅ {msg}")
+            st.success(f"{msg}")
             st.rerun()
 
         if not confirmar:
