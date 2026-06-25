@@ -34,6 +34,9 @@ e o framework Streamlit para interface do usuário.
 
 
 
+
+
+
 **Linguagem e ferramentas utilizadas:**
 
 
@@ -46,6 +49,9 @@ Git/GitHub
 Streamlit
 
 Claude(Antrophic)
+
+
+
 
 **------estoque.py---------**
 
@@ -64,9 +70,17 @@ O arquivo 'main.py' é responsável por chamar todas funções definidas no arqu
 **------estoque.json------** O estoque.json é criado a partir da execução do programa, servindo para armazenar. de forma permanente, os dados recebido pelo programa. É usado, como um banco de dados, sendo útil para inserir, visualizar, atualizar e deletar dados de um programa CRUD, por exemplo.
 
 
+
+
+
+
 **Streamlit Interface:**
 
 Usamos a Inteligência Artificial da Antrophic, **Claude** para transformar o sistema de controle de estoque, que antes era um sistema de linha de comando, em uma interface intuitiva, utilizando ícones da biblioteca Material Symbols(Biblioteca externa do Google de ícones).
+
+
+
+
 
 **Prompt 01:** 
 
@@ -199,9 +213,15 @@ Forneça o código completo e organizado dos arquivos `estoque.py` e `app.py`, p
 
 
 
+
+
+
 **Prompt 02:**
 
 *"Para estilização do sistema coloque alguns elementos visuais, criando um padrão visual usando a biblioteca Material Design do Google"*
+
+
+
 
 **Features adicionadas**
 
