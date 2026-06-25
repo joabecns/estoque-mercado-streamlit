@@ -1,0 +1,47 @@
+{
+    "2": {
+        "nome": "feijão",
+        "preco": 8.5,
+        "quantidade": 80
+    },
+    "3": {
+        "nome": "leite integral",
+        "preco": 5.2,
+        "quantidade": 120
+    },
+    "4": {
+        "nome": "óleo de soja",
+        "preco": 7.8,
+        "quantidade": 60
+    },
+    "5": {
+        "nome": "açúcar",
+        "preco": 4.9,
+        "quantidade": 100
+    },
+    "6": {
+        "nome": "macarrão",
+        "preco": 3.5,
+        "quantidade": 75
+    },
+    "7": {
+        "nome": "café",
+        "preco": 14.9,
+        "quantidade": 40
+    },
+    "8": {
+        "nome": "farinha",
+        "preco": 4.2,
+        "quantidade": 87
+    },
+    "9": {
+        "nome": "sabão em pó",
+        "preco": 11.5,
+        "quantidade": 8
+    },
+    "10": {
+        "nome": "chocolate",
+        "preco": 5.0,
+        "quantidade": 5
+    }
+}
