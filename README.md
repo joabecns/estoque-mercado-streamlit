@@ -225,7 +225,7 @@ PYTHON SOFTWARE FOUNDATION. os.path — Manipulações comuns de nomes de caminh
 
 CRUD: o que é e como funciona?: https://blog.geekhunter.com.br/crud/
 
-Inteligência Artificial da Antropich - Claude em: claude.ai
+Inteligência Artificial da Antropich - Claude em: [claude.ai](http://claude.com/)
 
 Cores no Terminal https://www.youtube.com/watch?v=0hBIhkcA8O8
 
