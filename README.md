@@ -249,3 +249,5 @@ Inteligência Artificial da Antropich - Claude em: [claude.ai](http://claude.com
 
 Cores no Terminal https://www.youtube.com/watch?v=0hBIhkcA8O8
 
+Playlist sobre Streamlit - (https://youtube.com/playlist?list=PLYE_6MNsHIyN--yBVaSq9xdNSLO5SNtXY&si=RuLdEANrQrajNRxq)
+
